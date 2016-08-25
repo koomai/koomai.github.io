@@ -8,7 +8,7 @@ elixir.config.publicPath = 'content/assets';
 elixir(function(mix) {
     var env = argv.e || argv.env || 'default';
 
-    mix.styles(['style.css'])
+    mix.styles(['clean-blog.css', 'animate.css', 'style.css'])
         .exec('php katana build --env=' + env, [
             './content/*',
             './content/**/*',

@@ -12,10 +12,7 @@
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <!-- Bootstrap Core CSS -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Theme CSS -->
-    <link href="/assets/css/clean-blog.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/assets/css/all.css">
 
     <!-- Custom Fonts -->
     <link href="/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -36,7 +33,7 @@
                     Menu <i class="fa fa-bars"></i>
                 </button>
                 <a class="navbar-brand" href="@url('/')">
-                    <img width="100" src="/assets/img/logo.png" alt="Koomai">
+                    <img width="100" src="/assets/img/logo.png" alt="Koomai" class="animated bounceIn">
                 </a>
             </div>
 
