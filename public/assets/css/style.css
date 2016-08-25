@@ -1,0 +1,57 @@
+body {
+    background: #F5F3EE;    
+    color: #3b3738;
+}
+
+a {
+    color: #C63D0F;
+}
+
+a:hover {
+    color: #C63D0F;
+    opacity: 0.8;
+    text-decoration: none;
+}
+
+
+.intro-header-post-base {
+    margin-bottom: 10px;
+}
+
+a.social-media-buttons {
+    color: #232323;
+}
+
+a.social-media-buttons:hover {
+    color: #1e1e1e;
+}
+
+.post-preview > a {
+    color: #3b3738;
+}
+
+.post-preview > a:hover {
+    color: #C63D0F;
+}
+
+
+
+.site-heading .list-inline {
+    padding-top: 50px;
+}
+
+.post-footer {
+    margin-top: 40px;
+}
+.post-footer > a {
+    font-size: 0.8em;
+}
+
+.media ul {
+    margin-top: 15px;
+}
+
+footer {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

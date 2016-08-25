@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <title>Koomai - Patching POODLE in Forge in 2 easy steps</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Theme CSS -->
+    <link href="/assets/css/clean-blog.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/style.css">
+
+    <!-- Custom Fonts -->
+    <link href="/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img width="100" src="/assets/img/logo.png" alt="Koomai">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    
+
+    <!-- Main Content -->
+    
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/rock04.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Patching POODLE in Forge in 2 easy steps</h1>
+                        <span class="meta">Posted on 18 October 2014</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <p>If you're using <a href="https://forge.laravel.com/">Forge</a> to manage your server, here's a quick tip to patch the SSLv3 POODLE bug in 2 easy steps.</p>
+<h4>Step 1</h4>
+<p>Go to the Recipes section in your <a href="http://forge.laravel.com/recipes">Forge dashboard</a> and create a new recipe with the details below:</p>
+<p><strong>Name</strong>: Patch Poodle (or anything else you want to name it)</p>
+<p><strong>User</strong>: root</p>
+<p><strong>Script</strong>:</p>
+<pre><code class="language-bash">
+printf 'ssl_protocols TLSv1 TLSv1.1 TLSv1.2;' > /etc/nginx/conf.d/ssl_protocols.conf
+service nginx restart
+</code></pre>
+<h4>Step 2</h4>
+<p>Click on the <strong>Play</strong> icon next to your recipe and run it across all your servers.</p>
+<p>That's it. Done!</p>
+<h4>What's happening here?</h4>
+<p>Look at the contents of the <code>/etc/nginx/nginx.conf</code> file. At the bottom of the <em>http</em> block, you'll see the following:</p>
+<p><code>include /etc/nginx/conf.d/*.conf;</code></p>
+<p>All the configuration files in the <code>/etc/nginx/conf.d</code> directory are included in the main file.</p>
+<p><strong>Update</strong>: There is now an official recipe for Forge to patch POODLE. Different approach, same results. </p>
+                    
+                    <div class="post-footer">
+                        <a class="twitter-share-button" data-size="large" 
+                          href="https://twitter.com/intent/tweet?via=koomai&text=Patching POODLE in Forge in 2 easy steps">
+                        Tweet this</a>
+                        <br>
+                        <a href="/"><i class="fa fa-arrow-circle-o-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">
+                        Built with <a href="http://themsaid.com/katana" target="_blank">Katana</a>
+                         & <a href="https://startbootstrap.com/template-overviews/clean-blog/" target="_blank">Clean Blog theme</a>
+                        <br>
+                        Copyright &copy; Koomai 2016
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/assets/js/jqBootstrapValidation.js"></script>
+    <script src="/assets/js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="/assets/js/clean-blog.min.js"></script>
+    
+    <!-- Twitter  -->
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+     
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+     
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+</body>
+
+</html>
