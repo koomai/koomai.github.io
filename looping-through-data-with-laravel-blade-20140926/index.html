@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+
+    <title>Koomai - Looping through data with Laravel Blade</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/all.css">
+
+    <!-- Custom Fonts -->
+    <link href="/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img width="100" src="/assets/img/logo.png" alt="Koomai" class="animated bounceIn">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    
+
+    <!-- Main Content -->
+    
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/rock02.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Looping through data with Laravel Blade</h1>
+                        <span class="meta">Posted on 29 September 2014</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <p>When it comes to looping through data in your <code>View</code> files using Laravel's Blade templates, there is more than one way to <a href="http://english.stackexchange.com/questions/32123/origin-of-the-phrase-theres-more-than-one-way-to-skin-a-cat" target="_blank">skin a cat</a>. </p>
+<p>Say you have an array (or some records from your database) that you want to loop through and display in your view file:</p>
+<pre>
+<code class="language-php">
+&#36;books = [
+    [
+        'id'        => 1,
+        'title'     => 'Tame of Groans',
+        'author'    => 'George M'
+    ],
+    [
+        'id'        => 2,
+        'title'     => 'Rort of the Lings',
+        'author'    => 'John T'
+    ],
+    [
+        'id'        => 3,
+        'title'     => 'Yvan Eht Nioj',
+        'author'    => 'Bart S'
+    ],
+];
+</code>
+</pre>
+<p>In <code>app/views/books/index.blade.php</code>, you have:</p>
+<pre><code class="language-php">
+&#64;if (count(&#36;books))
+    &#64;foreach(&#36;books as &#36;book)
+        &#64;include('books.single', &#36;book)
+    &#64;endforeach
+&#64;else
+   &lt;p&gt;No Books exist.&lt;/p&gt;
+&#64;endif        
+</code></pre>
+<p>In <code>app/views/books/single.blade.php</code>, you have:</p>
+<pre><code class="language-php">
+&lt;li&gt;{{{ &#36;book['title'] }}} by &lt;strong&gt;{{{ &#36;book['author'] }}}&lt;/strong&gt;&lt;/li&gt;
+</code></pre>
+<p>This will display the <code>$books</code> array like this:</p>
+<ul>
+<li>Tame of Groans by <strong>George M</strong></li>
+<li>Rort of the Lings by <strong>John T</strong></li>
+<li>Yvan Eht Nioj by <strong>Bart S</strong></li>
+</ul>
+<p>If the array is empty, it will simply display <em>No Books exist.</em></p>
+<p>Laravel makes it easier to check for empty data with the <code>forelse</code> Blade syntax. Amend the above control structure to this:</p>
+<pre><code class="language-php">
+&#64;forelse(&#36;books as &#36;book)
+    &#64;include('books.single', &#36;book)
+&#64;empty
+    &lt;p>No Books exist.&lt;/p>
+&#64;endforelse
+</code></pre>
+<p>You will get the exact same results.</p>
+<p>I recently <a href="http://ericlbarnes.com/rebuilding-wardrobe-week-4-timezones/#comment-1604650472" target="_blank">came across</a> an undocumented Laravel Blade syntax - <code>each</code>. It actually simplifies the above example further and makes your code cleaner:</p>
+<pre><code class="language-php">
+&#64;each('books.single', &#36;books, 'book', 'raw|&lt;p>No Books exist.&lt;p>')
+</code></pre>
+<p>That's it. Again, you will get the exact same results.</p>
+<p>This implements the <code>renderEach</code> method in the <code>Illuminate\View\Factory</code> class.</p>
+<pre><code class="language-php">
+public function renderEach($view, $data, $iterator, $empty = 'raw|')
+{
+    ...
+}
+</code></pre>
+<p>It accepts the <code>View</code> file and the array as the first two arguments. </p>
+<p>The third argument is the variable with the iterated value. Think of it as passing <code>compact('book')</code> to <code>books.single</code> after each iteration.</p>
+<p>The last parameter displays a <code>View</code> file or a string if the array is empty. It needs to be prefixed with <code>raw|</code> if you pass a string as the argument. </p>
+<p>In the example above, you could put <code>&lt;p&gt;No Books exist.&lt;/p&gt;</code> into a file <code>apps/views/books/empty.blade.php</code>. Then change <code>each</code> to this:</p>
+<pre><code class="language-php">&#64;each('books.single', &#36;books, 'book', 'books.empty')</code></pre>
+<p>Exact same results again. High five!</p>
+                    
+                    <div class="post-footer">
+                        <a class="twitter-share-button" data-size="large" 
+                          href="https://twitter.com/intent/tweet?via=koomai&text=Looping through data with Laravel Blade">
+                        Tweet this</a>
+                        <br>
+                        <a href="/"><i class="fa fa-arrow-circle-o-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">
+                        Built with <a href="http://themsaid.com/katana" target="_blank">Katana</a>
+                         & <a href="https://startbootstrap.com/template-overviews/clean-blog/" target="_blank">Clean Blog theme</a>
+                        <br>
+                        Copyright &copy; Koomai 2016
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/assets/js/jqBootstrapValidation.js"></script>
+    <script src="/assets/js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="/assets/js/clean-blog.min.js"></script>
+    
+    <!-- Twitter  -->
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+     
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+     
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+</body>
+
+</html>

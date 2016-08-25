@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Here's a short list of Composer commands that you should know in addition to the usual suspects.">
+
+    <title>Koomai - Some Composer Commands You Should Know</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/all.css">
+
+    <!-- Custom Fonts -->
+    <link href="/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img width="100" src="/assets/img/logo.png" alt="Koomai" class="animated bounceIn">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    
+
+    <!-- Main Content -->
+    
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/stone01.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Some Composer Commands You Should Know</h1>
+                        <span class="meta">Posted on 5 March 2014</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <p>Here's a short list of Composer commands that you should know in addition to the usual suspects - <code>install</code>, <code>update</code> and <code>create-project</code>.</p>
+<p>First of all, if you haven't installed Composer globally, move the <code>composer.phar</code> file from your project to the <code>/bin</code> folder:</p>
+<pre><code class="language-bash">
+sudo mv composer.phar /usr/local/bin/composer
+</code></pre>
+<h3>composer require vendor/package</h3>
+<p>Instead of updating your <code>composer.json</code> file manually, let Composer do it for you.</p>
+<p>You can run <code>composer require vendor/package --dev</code> to add it to <code>require-dev</code> instead.</p>
+<h3>composer install --prefer-dist --no-dev</h3>
+<p>You generally don't need to clone entire repositories of your dependencies in production environments. You don't need to install dependencies under <code>require-dev</code> in your <code>composer.json</code> file either.</p>
+<h3>composer update vendor/package</h3>
+<p>Generally, you just need to update a specific package to the latest version. Running a blanket <code>composer update</code> updates all your dependencies and you can run into some unexpected compatibility issues if the package versions are mostly <code>dev-master</code>.</p>
+<p>Also, updating dependencies should be part of your version control workflow. </p>
+<ul>
+<li>Commit your <code>composer.lock</code> file. </li>
+<li>Run <code>update</code> commands only in your development environment and test.</li>
+<li>Push your commits to other environments.</li>
+<li>In other environments, only run <code>install</code> commands so that packages are installed from the updated <code>composer.lock</code> file.</li>
+</ul>
+<h3>composer global require vendor/package</h3>
+<p>You can install packages globally so that they are shared by all projects. </p>
+<p>For example, you can install <code>phpunit</code> globally:</p>
+<pre><code class="language-bash">
+composer global require phpunit/phpunit:3.7.*
+</code></pre>
+<h3>composer search &quot;foo&quot; &amp; composer show vendor/package</h3>
+<p>You can view package information right in your terminal.</p>
+<p>For example, if I'm looking for a Bit.ly API package:</p>
+<pre><code class="language-bash">
+composer search bitly
+</code></pre>
+<p>I get a list of results:</p>
+<pre><code class="language-bash">
+pnomolos/phitly Bit.ly v3 API wrapper
+
+rukbat/bitly-bundle bit.ly API bundle for symfony2
+
+hashids/hashids Generate hashes like YouTube or Bitly...
+
+hwi/oauth-bundle Support for authenticating users using both OAuth1.0a and OAuth2 in Symfony2.
+
+...   
+</code></pre>
+<p>The first result looks interesting, so I get more information on it:</p>
+<pre><code class="language-bash">
+composer show pnomolos/phitly
+</code></pre>
+<p>This shows me almost everything I need to know about the package:</p>
+<pre><code class="language-bash">
+name     : pnomolos/phitly
+
+descrip. : Bit.ly v3 API wrapper
+
+keywords : api, bitly, http, phitly, wrapper
+
+versions : * dev-master, 0.1.0
+
+type     : library
+
+license  : BSD
+
+source   : [git] https://github.com/pnomolos/Phitly.git ...
+
+dist     : [zip] https://api.github.com/repos/pnomolos/Phitly/zipball/08168e492baa90e5a2b452af052a318aa376a5e1 ...
+
+names    : pnomolos/phitly
+
+autoload
+
+psr-0
+
+Phitly => lib/
+
+requires
+
+guzzle/guzzle 3.8.*
+
+league/oauth2-client dev-master
+
+php >=5.3.2
+</code></pre>
+<h3>composer depends vendor/package</h3>
+<p>This gives you a list of packages that depend on the package you entered.</p>
+<p>For example, running <code>composer depends guzzle/guzzle</code> in your project root will give you a list of packages that depend on Guzzle, including the version.</p>
+<p>This is relevant because Guzzle's creator posted a <a href="https://twitter.com/mtdowling/status/440901351657054208">tweet</a> earlier today asking people to stop using the <code>dev-master</code> version of Guzzle.</p>
+<h3>composer dump-autoload --optimize</h3>
+<p>Run this on your production environment for better performance. It converts PSR-0/4 to classmap, which is a faster autoloader.</p>
+                    
+                    <div class="post-footer">
+                        <a class="twitter-share-button" data-size="large" 
+                          href="https://twitter.com/intent/tweet?via=koomai&text=Some Composer Commands You Should Know">
+                        Tweet this</a>
+                        <br>
+                        <a href="/"><i class="fa fa-arrow-circle-o-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">
+                        Built with <a href="http://themsaid.com/katana" target="_blank">Katana</a>
+                         & <a href="https://startbootstrap.com/template-overviews/clean-blog/" target="_blank">Clean Blog theme</a>
+                        <br>
+                        Copyright &copy; Koomai 2016
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/assets/js/jqBootstrapValidation.js"></script>
+    <script src="/assets/js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="/assets/js/clean-blog.min.js"></script>
+    
+    <!-- Twitter  -->
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+     
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+     
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+</body>
+
+</html>
