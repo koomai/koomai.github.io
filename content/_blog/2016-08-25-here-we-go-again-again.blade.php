@@ -9,7 +9,7 @@
 @section('post_body')
 
     @markdown
-    I've lost count of how many times I've tinkered around with this blog without actually writing anything meaningful. This time it's powered by [Katana](http://themsaid.com/katana/), a neat blog generator built on top of Laravel's components.
+    I've lost count of how many times I've tinkered around with the innards of this blog instead of actually writing something meaningful. This time it's powered by [Katana](http://themsaid.com/katana/), a neat blog generator built on top of Laravel's components.
 
     The theme is [Clean blog](https://startbootstrap.com/template-overviews/clean-blog/) by Start Bootstrap. I've customised it a little, but I'm not a designer so it's invariably turned out a bit uglier than I imagined it in my mind (granted I only imagined it for 5 seconds). 
 
