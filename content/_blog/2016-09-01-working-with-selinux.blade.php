@@ -1,8 +1,8 @@
 @extends('_includes.blog_post_base')
 
-@section('post::title', 'Database connections an SELinux server')
+@section('post::title', 'Database connection on server with SELinux')
 @section('post::date', '01 September 2016')
-@section('post::brief', 'aka Security-Enhanced Linux headache')
+@section('post::brief', 'aka Security-Enhanced Linux-Induced headache')
 @section('post::image', 'water01')
 @section('pageTitle')- @yield('post::title')@stop
 
