@@ -84,7 +84,7 @@
 <p>However, after a bit more research I learnt that there is a specific property that needed to be enabled:  </p>
 <p><code>sudo setsebool httpd_can_network_connect_db 1</code></p>
 <p>That was it. Until I rebooted the server and the above reverted to <code>off</code> again. The final solution was:</p>
-<p><code>sudo setsebool -P dhttpd_can_network_connect_db 1</code></p>
+<p><code>sudo setsebool -P httpd_can_network_connect_db 1</code></p>
 <p>The <code>-P</code> flag makes the change permanent. Problem solved.</p>
                     
                     <div class="post-footer">
