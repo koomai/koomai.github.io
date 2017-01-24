@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="A Caveat When Hooking into Model Events">
+
+    <title>Koomai - Soft Deleting a Model in Laravel</title>
+    <link rel="icon" type="image/png" href="/assets/img/favicon.png">
+    <!-- Bootstrap Core CSS -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/assets/css/all.css">
+
+    <!-- Custom Fonts -->
+    <link href="/assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href='https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    Menu <i class="fa fa-bars"></i>
+                </button>
+                <a class="navbar-brand" href="/">
+                    <img width="100" src="/assets/img/logo.png" alt="Koomai" class="animated bounceIn">
+                </a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    
+
+    <!-- Main Content -->
+    
+    <!-- Page Header -->
+    <!-- Set your background image for this header on the line below. -->
+    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/sunset04.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="post-heading">
+                        <h1>Soft Deleting a Model in Laravel</h1>
+                        <span class="meta">Posted on 24 January 2017</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Post Content -->
+    <article>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    
+    <p>Soft deleting a model in Laravel is fairly straightfoward. </p>
+<p>You add a <code>deleted_at</code> column to your table using a helper method in your migration:  </p>
+<pre><code>Schema::table('posts', function ($table) {
+    ...
+    $table-&gt;softDeletes();
+});</code></pre>
+<p>Then you add the <code>SoftDeletes</code> trait to your model:  </p>
+<pre><code>...
+class Post extends Model 
+{
+    use SoftDeletes;
+...</code></pre>
+<p>That's it. When you call <code>Post::destroy($id)</code>, it will &quot;soft delete&quot; your record by adding the date/time to the <code>deleted_at</code> column and excluding it from subsequent query results.</p>
+<p>But what if you want to update another column too? For example, you may want to maintain a record of the logged in user in a <code>deleted_by</code> column. You can do this by hooking into the <code>deleting</code> model event (there is one caveat though).</p>
+<p>In the example above, you would add a <code>boot()</code> method to the <code>Post</code> model and hook into the <code>deleting</code> model event. Here, you update the model to add the logged in user's id to the <code>deleted_by</code> column.</p>
+<pre><code>public static function boot()
+{
+    parent::boot();
+
+    static::deleting(function ($post) {
+        $post-&gt;deleted_by = Auth::id(); 
+    });
+}</code></pre>
+<p>The caveat – when you check your table, you'll find that the <code>deleted_by</code> column is not populated at all! It's because the <code>SoftDeletes</code> trait simply updates the <code>deleted_at</code> column ignoring any other changes in the model itself.</p>
+<p>This was a bit confusing at first because when you normally hook into an <code>-ing</code> event, e.g. <code>updating</code>, the changes to the model are applied when it is saved to the database. </p>
+<p>In this case though, you have to explicitly call the <code>save()</code> method on the model to persist it before the soft deletion occurs. The above method would look like this:</p>
+<pre><code>public static function boot()
+{
+    parent::boot();
+
+    static::deleting(function ($post) {
+        $post-&gt;deleted_by = Auth::id();
+        $post-&gt;save();
+    });
+}</code></pre>
+<p>This now works. The <code>deleted_by</code> column is populated with the current user's Id in the database and then soft deleted. </p>
+                    
+                    <div class="post-footer">
+                        <a class="twitter-share-button" data-size="large" 
+                          href="https://twitter.com/intent/tweet?via=koomai&text=Soft Deleting a Model in Laravel">
+                        Tweet this</a>
+                        <br>
+                        <a href="/"><i class="fa fa-arrow-circle-o-left"></i> Go back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </article>
+
+
+    <hr>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <p class="copyright text-muted">
+                        Built with <a href="http://themsaid.com/katana" target="_blank">Katana</a>
+                         & <a href="https://startbootstrap.com/template-overviews/clean-blog/" target="_blank">Clean Blog theme</a>
+                        <br>
+                        Copyright &copy; Koomai 2016
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="/assets/vendor/jquery/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- Contact Form JavaScript -->
+    <script src="/assets/js/jqBootstrapValidation.js"></script>
+    <script src="/assets/js/contact_me.js"></script>
+
+    <!-- Theme JavaScript -->
+    <script src="/assets/js/clean-blog.min.js"></script>
+    
+    <!-- Twitter  -->
+    <script>window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+     
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+     
+      return t;
+    }(document, "script", "twitter-wjs"));</script>
+</body>
+
+</html>
