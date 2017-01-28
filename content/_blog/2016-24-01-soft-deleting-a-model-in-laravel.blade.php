@@ -46,8 +46,9 @@
             $post->deleted_by = Auth::id(); 
         });
     }
-    ```
-    #### The Caveat  
+    ```  
+
+    ### The Caveat  
 
     When you check your table, you'll find that the `deleted_by` column is not populated at all! It's because the `SoftDeletes` trait simply updates the `deleted_at` column ignoring any other changes in the model itself.
 
