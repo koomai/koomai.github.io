@@ -22,7 +22,7 @@
         
         That was it. Until I rebooted the server and the above reverted to `off` again. The final solution was:
 
-        `sudo setsebool -P dhttpd_can_network_connect_db 1`
+        `sudo setsebool -P httpd_can_network_connect_db 1`
 
         The `-P` flag makes the change permanent. Problem solved.
 
