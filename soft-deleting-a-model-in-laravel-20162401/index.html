@@ -101,10 +101,10 @@ class Post extends Model
         $post-&gt;deleted_by = Auth::id(); 
     });
 }</code></pre>
-<h3>The caveat</h3>
+<h4>The Caveat</h4>
 <p>When you check your table, you'll find that the <code>deleted_by</code> column is not populated at all! It's because the <code>SoftDeletes</code> trait simply updates the <code>deleted_at</code> column ignoring any other changes in the model itself.</p>
 <p>In <code>Illuminate\Database\Eloquent\SoftDeletes</code>:  </p>
-<pre><code>    /**
+<pre><code>/**
  * Perform the actual delete query on this model instance.
  *
  * @return  void
