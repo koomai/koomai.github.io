@@ -101,8 +101,23 @@ class Post extends Model
         $post-&gt;deleted_by = Auth::id(); 
     });
 }</code></pre>
-<p>The caveat – when you check your table, you'll find that the <code>deleted_by</code> column is not populated at all! It's because the <code>SoftDeletes</code> trait simply updates the <code>deleted_at</code> column ignoring any other changes in the model itself.</p>
-<p>This was a bit confusing at first because when you normally hook into an <code>-ing</code> event, e.g. <code>updating</code>, the changes to the model are applied when it is saved to the database. </p>
+<h3>The caveat</h3>
+<p>When you check your table, you'll find that the <code>deleted_by</code> column is not populated at all! It's because the <code>SoftDeletes</code> trait simply updates the <code>deleted_at</code> column ignoring any other changes in the model itself.</p>
+<p>In <code>Illuminate\Database\Eloquent\SoftDeletes</code>:  </p>
+<pre><code>    /**
+ * Perform the actual delete query on this model instance.
+ *
+ * @return  void
+ */
+protected function runSoftDelete()
+{
+    $query = $this-&gt;newQueryWithoutScopes()-&gt;where($this-&gt;getKeyName(), $this-&gt;getKey());
+
+    $this-&gt;{$this-&gt;getDeletedAtColumn()} = $time = $this-&gt;freshTimestamp();
+
+    $query-&gt;update([$this-&gt;getDeletedAtColumn() =&gt; $this-&gt;fromDateTime($time)]);
+}</code></pre>
+<p>This was a bit confusing at first because when you normally hook into event like <code>updating</code> or <code>creating</code>, the changes to the model are applied when it is saved to the database. </p>
 <p>In this case though, you have to explicitly call the <code>save()</code> method on the model to persist it before the soft deletion occurs. The above method would look like this:</p>
 <pre><code>public static function boot()
 {
@@ -113,7 +128,7 @@ class Post extends Model
         $post-&gt;save();
     });
 }</code></pre>
-<p>This now works. The <code>deleted_by</code> column is populated with the current user's Id in the database and then soft deleted. </p>
+<p>This now works. The <code>deleted_by</code> column is populated with the current user's id in the database and then soft deleted. </p>
                     
                     <div class="post-footer">
                         <a class="twitter-share-button" data-size="large" 
