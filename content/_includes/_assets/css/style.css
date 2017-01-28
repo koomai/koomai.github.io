@@ -81,6 +81,9 @@ a:hover {
     text-decoration: none;
 }
 
+h3 {
+  margin-top: 28px;
+}
 
 .intro-header-post-base {
     margin-bottom: 10px;
