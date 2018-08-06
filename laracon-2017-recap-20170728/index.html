@@ -6,9 +6,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="aka Security-Enhanced Linux-Induced headache">
+    <meta name="description" content="And links galore">
 
-    <title>Koomai - Database connection on server with SELinux</title>
+    <title>Koomai - Laracon US 2017 - A recap</title>
     <link rel="icon" type="image/png" href="/assets/img/favicon.png">
     <!-- Bootstrap Core CSS -->
     <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -59,13 +59,13 @@
     
     <!-- Page Header -->
     <!-- Set your background image for this header on the line below. -->
-    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/water01.jpg')">
+    <header class="intro-header intro-header-post-base" style="background-image: url('/assets/img/backgrounds/candle01.jpg')">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     <div class="post-heading">
-                        <h1>Database connection on server with SELinux</h1>
-                        <span class="meta">Posted on 01 September 2016</span>
+                        <h1>Laracon US 2017 - A recap</h1>
+                        <span class="meta">Posted on 28 July 2017</span>
                     </div>
                 </div>
             </div>
@@ -78,18 +78,11 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                     
-    <p>I recently had to migrate a working application to a RHEL7 server with SELinux enabled. Everything seemed to be okay but it just wouldn't connect to the remote database. </p>
-<p>My first instinct was to troubleshoot the database server but I didn't have any problems connecting from a desktop client or from the terminal. After googling around for a while, it turned out that SELinux was the culprit. The easy (but inappropriate) solution was to disable it:  </p>
-<p><code>sudo setenforce 0</code>  </p>
-<p>However, after a bit more research I learnt that there is a specific property that needed to be enabled:  </p>
-<p><code>sudo setsebool httpd_can_network_connect_db 1</code></p>
-<p>That was it. Until I rebooted the server and the above reverted to <code>off</code> again. The final solution was:</p>
-<p><code>sudo setsebool -P httpd_can_network_connect_db 1</code></p>
-<p>The <code>-P</code> flag makes the change permanent. Problem solved.</p>
+    <p>This post was published on Medium – <a href="https://medium.com/koomai/laracon-2017-a-recap-and-links-galore-c233be2de670">https://medium.com/koomai/laracon-2017-a-recap-and-links-galore-c233be2de670</a></p>
                     
                     <div class="post-footer">
                         <a class="twitter-share-button" data-size="large" 
-                          href="https://twitter.com/intent/tweet?via=koomai&text=Database connection on server with SELinux">
+                          href="https://twitter.com/intent/tweet?via=koomai&text=Laracon US 2017 - A recap">
                         Tweet this</a>
                         <br>
                         <a href="/"><i class="fa fa-arrow-circle-o-left"></i> Go back</a>
